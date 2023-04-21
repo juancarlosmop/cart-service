@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: car-service
+  
+  datasource: 
+    url: jdbc:mysql://localhost:3306/shoping_cart?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC-6
+    username: root
+#    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver  
