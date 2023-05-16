@@ -1,4 +1,4 @@
-package com.example.cart.model;
+package com.example.cart.dto;
 
 import java.io.Serializable;
 
@@ -10,6 +10,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RqCartItem implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	@JsonProperty("id_product")
 	private int idProduct;

@@ -14,34 +14,43 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.cart.dto.RqProduct;
 import com.example.cart.model.Product;
-import com.example.cart.model.RqProduct;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Repository
 public class ProductRepository implements  IProductRepository{
 
-
+	/*dependency injection to jdbcTemplate */
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
    
   
-    // Método para obtener todos los productos
+    /*
+	 * (no-javadoc)
+	 * @ see  com.example.cart.repository.IProductRepository#findAll()
+	 * */
     public List<Product> findAll() {
         return jdbcTemplate.query("SELECT * FROM products",
                 new BeanPropertyRowMapper<>(Product.class));
     }
 
-    // Método para obtener un producto por ID
+    /*
+	 * (no-javadoc)
+	 * @ see  com.example.cart.repository.IProductRepository#findById(int id)
+	 * */
     public Product findById(int id) {
         return jdbcTemplate.queryForObject("SELECT * FROM products WHERE id = ?",
         		 new BeanPropertyRowMapper<>(Product.class),
                 id);
     }
 
-    // Método para crear un producto
+    /*
+	 * (no-javadoc)
+	 * @ see  com.example.cart.repository.IProductRepository#save(com.example.cart.dto.RqProduct)
+	 * */
 	public int save(RqProduct product) {
 		try {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -62,7 +71,10 @@ public class ProductRepository implements  IProductRepository{
 		}
 	}
 
-    // Método para actualizar un producto
+	/*
+	 * (no-javadoc)
+	 * @ see  com.example.cart.repository.IProductRepository#update(com.example.cart.dto.RqProduct,int)
+	 * */
     public void update(RqProduct product,int id) {
         jdbcTemplate.update(
                 "UPDATE products SET name = ?, price = ?, description=? WHERE id = ?",
@@ -70,6 +82,10 @@ public class ProductRepository implements  IProductRepository{
         );
     }
     
+    /*
+	 * (no-javadoc)
+	 * @ see  com.example.cart.repository.IProductRepository#updateProductStock(com.example.cart.model.Product)
+	 * */
     public void updateProductStock(Product product) {
         jdbcTemplate.update(
                 "UPDATE products SET   stock=? WHERE id = ?",
@@ -77,7 +93,10 @@ public class ProductRepository implements  IProductRepository{
         );
     }
 
-    // Método para eliminar un producto por ID
+    /*
+	 * (no-javadoc)
+	 * @ see  com.example.cart.repository.IProductRepository#deleteById(int)
+	 * */
     public void deleteById(int id) {
         jdbcTemplate.update(
                 "DELETE FROM products WHERE id = ?",

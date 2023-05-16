@@ -1,4 +1,4 @@
-package com.example.cart.model;
+package com.example.cart.dto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +14,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RqPayment implements Serializable  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@JsonProperty("id_cart")
 	private int idCart;
 	@NotBlank
@@ -22,6 +26,7 @@ public class RqPayment implements Serializable  {
 	private double amount;
 	private int status;
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
-	private Date date;
+	@JsonProperty("date_in")
+	private Date date_in;
 
 }

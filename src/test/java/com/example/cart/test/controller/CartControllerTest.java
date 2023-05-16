@@ -22,12 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.example.cart.dto.RqCart;
+import com.example.cart.dto.RqCartItem;
+import com.example.cart.dto.RqPayment;
 import com.example.cart.model.Cart;
 import com.example.cart.model.CartItem;
 import com.example.cart.model.Product;
-import com.example.cart.model.RqCart;
-import com.example.cart.model.RqCartItem;
-import com.example.cart.model.RqPayment;
 import com.example.cart.model.Payment;
 import com.example.cart.model.User;
 import com.example.cart.service.CartService;

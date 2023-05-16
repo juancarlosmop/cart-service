@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.cart.dto.RpPayment;
+import com.example.cart.dto.RqCart;
+import com.example.cart.dto.RqCartItem;
+import com.example.cart.dto.RqPayment;
 import com.example.cart.model.Cart;
 import com.example.cart.model.CartItem;
 import com.example.cart.model.Payment;
-import com.example.cart.model.RpPayment;
-import com.example.cart.model.RqCart;
-import com.example.cart.model.RqCartItem;
-import com.example.cart.model.RqPayment;
 import com.example.cart.repository.ICartItemRepository;
 import com.example.cart.repository.ICartRepository;
 import com.example.cart.repository.IPaymentRepository;
@@ -22,30 +22,46 @@ import com.example.cart.repository.IProductRepository;
 
 @Service
 public class CartService implements ICartService{
-	
+	/* dependency injection to cartRepository*/
 	@Autowired
 	private ICartRepository cartRepository;
 	
+	/* dependency injection to cartItemRepository*/
 	@Autowired
 	private ICartItemRepository cartItemRepository;
 	
+	/* dependency injection to paymentRepository*/
 	@Autowired
 	private IPaymentRepository paymentRepository;
 	
+	/* dependency injection to productRepository*/
 	@Autowired
 	private  IProductRepository productRepository;
 	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#getCarById(int)
+   	 * */
 	@Override
 	public Cart getCarById(int idCar) {
 		return cartRepository.findById(idCar);
 	}
-
+	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#createCar(com.example.cart.dto.RqCart)
+   	 * */
 	@Override
 	public int createCar(RqCart car) {
 		
 		return cartRepository.save(car);
 	}
-
+	
+	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#getCarById(int)
+   	 * */
 	@Override
 	public double totalCarrito(int idCar) {
 		Cart cart=cartRepository.findById(idCar);
@@ -56,14 +72,27 @@ public class CartService implements ICartService{
 		return total;
 	}
 	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#removeItemCart(int)
+   	 * */
 	public void removeItemCart(int idItemCart) {
 		cartItemRepository.deleteItemCartById(idItemCart);
 	}
 	
+	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#addItemToCart(com.example.cart.dto.RqCartItem)
+   	 * */
 	public void addItemToCart(RqCartItem rqCartItem) {
 		cartItemRepository.saveItem(rqCartItem);
 	}
-
+	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#updateItemCartById(com.example.cart.dto.RqCartItem)
+   	 * */
 	@Override
 	public void updateItemCartById(RqCartItem rqCartItem) {
 		
@@ -71,6 +100,11 @@ public class CartService implements ICartService{
 		
 	}
 
+	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#savePayment(com.example.cart.dto.RqPayment)
+   	 * */
 	@Override
 	public RpPayment savePayment(RqPayment rqPayment) {
 		RpPayment rpPayment = new RpPayment();
@@ -96,6 +130,10 @@ public class CartService implements ICartService{
 		return rpPayment;
 	}
 	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#existItemsReject(com.example.cart.dto.model.CartItem)
+   	 * */
 	private List<CartItem> existItemsReject(List<CartItem> items){
 		List<CartItem> itemsReject = new ArrayList<>();
 		for(CartItem item:items) {
@@ -109,6 +147,10 @@ public class CartService implements ICartService{
 		return itemsReject;
 	}
 	
+	/*
+   	 * (no-javadoc)
+   	 * @ see  com.example.cart.service.ICartService#getPaymentBillByEmail(String)
+   	 * */
 	@Override
 	public Payment getPaymentBillByEmail(String email) {
 		return paymentRepository.getBillPaymentByEmail(email);

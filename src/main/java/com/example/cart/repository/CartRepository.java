@@ -13,10 +13,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.example.cart.dto.RqCart;
+import com.example.cart.dto.RqCartItem;
 import com.example.cart.model.Cart;
 import com.example.cart.model.CartItem;
-import com.example.cart.model.RqCart;
-import com.example.cart.model.RqCartItem;
 import com.example.cart.model.User;
 
 @Repository
@@ -32,7 +32,11 @@ public class CartRepository implements ICartRepository{
 	private ICartItemRepository carITemRepository;
 	
 	
-	
+	/* Method to create a new car
+	 * 
+	 * @param RqCart request from cart
+	 * @return int
+	 * */
 	@Override
 	public int save(RqCart car) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -49,19 +53,29 @@ public class CartRepository implements ICartRepository{
 		
 		return idCar;
 	}
-
+	
+	/* Method to get a cart by id
+	 * 
+	 * @param int id from cart
+	 * @return Cart object 
+	 * */
 	@Override
 	public Cart findById(int id) {
 	 return jdbctemplate.queryForObject("SELECT * FROM carts WHERE id=? ",  new CarRowMapper(carITemRepository,userRepository),id);
 		
 	}
-
+	
+	/* Method to get all carts
+	 * 
+	 * @param int id
+	 * @return Cart dto 
+	 * */
 	@Override
 	public List<Cart> findAll() {
 		return jdbctemplate.query("SELECT * FROM carts", new CarRowMapper(carITemRepository,userRepository));
 	}
 	
-	
+	/* Class to get each record from database */
 	private static final class CarRowMapper implements RowMapper<Cart>{
 		 private final ICartItemRepository cartItemRepository;
 		 
@@ -71,6 +85,12 @@ public class CartRepository implements ICartRepository{
 		        this.cartItemRepository = cartItemRepository;
 		        this.userRepository = userRepository;
 		 }
+		 
+		/* Method map to iterate each record
+		* 
+		* @param  ResultSet rs, int rowNum
+		* @return Cart 
+		* */
 		@Override
 		public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Cart cart= new Cart();

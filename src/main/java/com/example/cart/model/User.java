@@ -8,7 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User implements Serializable {
-	 private int id;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int id;
 	 private String username;
 	 private String email;
 	 private String password;

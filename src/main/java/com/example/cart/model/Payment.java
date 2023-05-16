@@ -19,6 +19,7 @@ public class Payment implements Serializable{
 	private double amount;
 	private int status;
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
-	private Date date;
+	@JsonProperty("date_in")
+	private Date dateIn;
 	
 }

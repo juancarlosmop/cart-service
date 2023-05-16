@@ -1,9 +1,23 @@
 spring:
-  application:
-    name: car-service
-  
-  datasource: 
-    url: jdbc:mysql://localhost:3306/shoping_cart?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC-6
-    username: root
-#    password: pass
-    driver-class-name: com.mysql.cj.jdbc.Driver  
+  application.name: cart-service
+  profiles.active: dev
+  cloud:
+    config:
+      #Propiedades para obtencion de configuraciones del config-service REMOTO
+      enabled: false
+      failFast: true
+      retry:
+        initialInterval: 6000
+        multiplier: 1.5
+        maxInterval: 30000
+      uri: http://config-service-git:8080
+      name: ${spring.application.name}
+      label: master
+      profile: ${spring.profiles.active}
+  config:
+    #Propiedades para obtencion de configuraciones en ambiente LOCAL
+    name: ${spring.application.name}
+    profile: ${spring.profiles.active}
+
+
+

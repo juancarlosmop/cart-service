@@ -1,0 +1,17 @@
+spring:
+  datasource: 
+    url: jdbc:mysql://localhost:3306/shoping_cart?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC-6
+    username: root
+#    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: create-drop
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+#-------------------------------------
+# Configuraciones de logger
+#-------------------------------------
+logging:
+  level:
+    mx.fonyoutelecom: INFO

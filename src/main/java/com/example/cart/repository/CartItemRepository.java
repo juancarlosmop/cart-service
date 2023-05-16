@@ -13,20 +13,26 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.example.cart.dto.RqCartItem;
 import com.example.cart.model.Cart;
 import com.example.cart.model.CartItem;
 import com.example.cart.model.Product;
-import com.example.cart.model.RqCartItem;
 
 @Repository
 public class CartItemRepository implements ICartItemRepository {
-	
+	/*dependency injection to jdbcTemplate*/
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+	/* dependency injection to productRepository */
 	@Autowired
 	private IProductRepository productRepository;
 	
+	
+	/* Method to save an item
+	* 
+	* @param  RqCartItem request fromo CartItem
+	*
+	* */
 	@Override
 	public void saveItem(RqCartItem cartItem) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -40,7 +46,11 @@ public class CartItemRepository implements ICartItemRepository {
 		
 	}
 
-	
+	/* Method to delete a item by id
+	 * 
+	 * @param int id of cartItem
+	 * 
+	 * */
     public void deleteItemCartById(int id) {
         jdbcTemplate.update(
                 "DELETE FROM cart_items WHERE id = ?",
@@ -48,19 +58,27 @@ public class CartItemRepository implements ICartItemRepository {
         );
     }
     
-    
+    /* Method to get a list of CartItem
+	 * 
+	 * @param int id of cartItem
+	 * @return List<CartItem> list of CartItem
+	 * */
 	@Override
 	public List<CartItem> findItemById(int id) {
 		return jdbcTemplate.query("SELECT * FROM cart_items WHERE id_cart=?",  new CarItemRowMapper(productRepository),id);
 	}
 	
+	/**/
 	private static final class CarItemRowMapper implements RowMapper<CartItem>{
 		private final IProductRepository productRepository;
 		
 		public CarItemRowMapper(IProductRepository productRepository) {
 			this.productRepository =productRepository;
 		}
-		
+		/* Method to get a records from a row in a table
+		 * @param ResultSet rs, int rowNum Resultset from record
+		 * @return  CartItem get a object
+		 * */
 		@Override
 		public CartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CartItem item = new CartItem();
