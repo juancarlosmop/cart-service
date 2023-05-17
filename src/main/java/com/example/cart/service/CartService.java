@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.example.cart.dto.RpPayment;
 import com.example.cart.dto.RqCart;
 import com.example.cart.dto.RqCartItem;
@@ -20,6 +21,8 @@ import com.example.cart.repository.ICartRepository;
 import com.example.cart.repository.IPaymentRepository;
 import com.example.cart.repository.IProductRepository;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class CartService implements ICartService{
 	/* dependency injection to cartRepository*/
@@ -112,16 +115,15 @@ public class CartService implements ICartService{
 		rpPayment.setMessage("The payment was did");
 		List<CartItem> items = cartItemRepository.findItemById(rqPayment.getIdCart());
 		List<CartItem> itemsReject = this.existItemsReject(items);
+		/* if there are not enough stock in a product from the cartitem */
 		if(!itemsReject.isEmpty()) {
 			rpPayment.setCode("WARNING");
 			rpPayment.setItemsReject(itemsReject);
 			rpPayment.setMessage("There are some items that they didn't add to shopping cart due to exist");
 		}else {
-			for(CartItem item:items) {
-				int newStock=item.getProduct().getStock() - item.getQuantity();
-				item.getProduct().setStock(newStock);
-				 productRepository.updateProductStock(item.getProduct());
-			 }
+			/* it is updated the stock */
+			this.updateStock(items);
+			/* it is saving the payment info*/
 			paymentRepository.savePayment(rqPayment);
 			rpPayment.setCode("OK");
 			rpPayment.setMessage("The purchase was did");
@@ -130,11 +132,21 @@ public class CartService implements ICartService{
 		return rpPayment;
 	}
 	
+	private void updateStock(List<CartItem> items) {
+		log.info("updatin stock");
+		for(CartItem item:items) {
+			int newStock=item.getProduct().getStock() - item.getQuantity();
+			item.getProduct().setStock(newStock);
+			 productRepository.updateProductStock(item.getProduct());
+		 }
+	}
+	
 	/*
    	 * (no-javadoc)
    	 * @ see  com.example.cart.service.ICartService#existItemsReject(com.example.cart.dto.model.CartItem)
    	 * */
-	private List<CartItem> existItemsReject(List<CartItem> items){
+	public List<CartItem> existItemsReject(List<CartItem> items){
+		log.info("checkin if there are not enoguh stock");
 		List<CartItem> itemsReject = new ArrayList<>();
 		for(CartItem item:items) {
 			int newStock=item.getProduct().getStock() - item.getQuantity();

@@ -27,6 +27,6 @@ public class RqPayment implements Serializable  {
 	private int status;
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
 	@JsonProperty("date_in")
-	private Date date_in;
+	private Date dateIn;
 
 }

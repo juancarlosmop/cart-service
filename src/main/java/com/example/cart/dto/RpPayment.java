@@ -11,11 +11,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RpPayment extends RpBase implements Serializable {
+public class RpPayment implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@JsonProperty("code")
+	private String code;
+	@JsonProperty("message")
+	private String message;
 	@JsonProperty("items_reject")
 	List<CartItem> itemsReject;
 
